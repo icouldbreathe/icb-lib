@@ -10,7 +10,7 @@ Templated doubly-linked linked list using sentinel node.
     * Overloads: move ctor, move assignment, `++`, `--` (prefix/postfix), `*`, `==`, `!=`
     * Templated for const-correctness
 * **ConstIterator**
-    * Alias for 'Iterator<const T>' (read-only)
+    * Alias for `Iterator<const T>` (read-only)
 
 ## Constructors
 
