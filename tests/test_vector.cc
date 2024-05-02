@@ -1,27 +1,22 @@
-#include <gtest/gtest.h>
-
 #include "icb/vector.h"
 
-struct TestStruct {
-        int x, y;
-        TestStruct(int a, int b) : x(a), y(b) {}
-};
+#include "common_test_setup.h"
 
 // Fixture for general icb::Vector<int> tests
-class ICBVectorIntTestFixture : public ::testing::Test {
+class ICBVectorIntTestFixture : public ICBTestFixture {
 protected:
     icb::Vector<int> test_vector; 
 };
 
 // Fixture for EmplaceBack with TestStruct
-class ICBVectorStructTestFixture : public ::testing::Test {
+class ICBVectorStructTestFixture : public ICBTestFixture {
 protected:
     icb::Vector<TestStruct> test_vector; 
 };
 
 TEST_F(ICBVectorIntTestFixture, DefaultConstructor) {
     EXPECT_EQ(test_vector.Size(), 0);
-    EXPECT_EQ(test_vector.Capacity(), 0); // Assuming your initial capacity is 0
+    EXPECT_EQ(test_vector.Capacity(), 0);
 }
 
 TEST_F(ICBVectorIntTestFixture, InitializerListConstructor) {
@@ -48,20 +43,17 @@ TEST_F(ICBVectorIntTestFixture, AtFunction) {
 
     EXPECT_EQ(test_vector.at(0), 5);
 
-    // Example with out-of-bounds (assuming you have exception handling)
     EXPECT_THROW(test_vector.at(2), std::out_of_range); 
 }
 
 TEST_F(ICBVectorIntTestFixture, PushBack) {
     test_vector.PushBack(10);  
     EXPECT_EQ(test_vector.Size(), 1); 
-
-    // ... more checks on element values and capacity growth
 }
 
 TEST_F(ICBVectorStructTestFixture, EmplaceBack) {
 
-    test_vector.EmplaceBack(10, 20); // Construct TestStruct in-place
+    test_vector.EmplaceBack(10, 20);
     EXPECT_EQ(test_vector.Size(), 1);  
     EXPECT_EQ(test_vector[0].x, 10);
     EXPECT_EQ(test_vector[0].y, 20);

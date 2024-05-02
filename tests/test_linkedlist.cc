@@ -1,53 +1,30 @@
-#include <gtest/gtest.h>
-
 #include <list>
 #include <string>
 #include "icb/linkedlist.h"
 
-class Entity
-{
-public:
-    Entity() = default;
-    Entity(int num)
-        : m_Number(num)
-    {
-        std::cout << "Constructing Entity: " << m_Number << std::endl;
-    }
-    ~Entity()
-    {
-        std::cout << "Destructing Entity: " << m_Number << std::endl;
-    }
+#include "common_test_setup.h"
 
-    int Get() const
-    {
-        return m_Number;
-    }
-
-private:
-    int m_Number;
-};
-
-class ICBLinkedListIntFixture : public ::testing::Test {
+class ICBLinkedListIntFixture : public ICBTestFixture {
 protected:
     icb::LinkedList<int> list;
 };
 
-class ICBLinkedListEntityFixture : public ::testing::Test {
+class ICBLinkedListEntityFixture : public ICBTestFixture {
 protected:
     icb::LinkedList<Entity> list;
 };
 
-class ICBLinkedListStringFixture : public ::testing::Test {
+class ICBLinkedListStringFixture : public ICBTestFixture {
 protected:
     icb::LinkedList<std::string> list;
 };
 
-class ICBLinkedListCharFixture : public ::testing::Test {
+class ICBLinkedListCharFixture : public ICBTestFixture {
 protected:
     icb::LinkedList<char> list;
 };
 
-class ICBLinkedListDoubleFixture : public ::testing::Test {
+class ICBLinkedListDoubleFixture : public ICBTestFixture {
 protected:
     icb::LinkedList<double> list;
 };
@@ -131,7 +108,7 @@ TEST_F(ICBLinkedListIntFixture, CopyConstructor)
         EXPECT_EQ(*it, expected[i++]);
     }
 
-    // Modify list1 and verify changes aren't reflected in list2
+    // Modify list and verify changes aren't reflected in list2
     list.PopFront();
     EXPECT_NE(list.Size(), list2.Size());
 }
@@ -154,7 +131,7 @@ TEST_F(ICBLinkedListDoubleFixture, CopyAssignment)
         EXPECT_EQ(*it, expected[i++]);
     }
 
-    // Modify list1 and verify changes are not reflected in list2
+    // Modify list and verify changes are not reflected in list2
     list.PopBack();
     list.PopBack();
     list.PushBack(2.0);
@@ -169,10 +146,10 @@ TEST_F(ICBLinkedListIntFixture, MoveConstructor)
         list.PushBack(i);
     }
 
-    // Move constructor takes the elements from list1 by value (rvalue reference)
+    // Move constructor takes the elements from list by value (rvalue reference)
     icb::LinkedList<int> list2(std::move(list));
 
-    // Verify list1 is now empty (moved elements)
+    // Verify list is now empty (moved elements)
     EXPECT_TRUE(list.Empty());
     EXPECT_EQ(list.Size(), 0);
 
@@ -195,14 +172,14 @@ TEST_F(ICBLinkedListStringFixture, MoveAssignment)
     icb::LinkedList<std::string> list2;
     list2.PushBack("orange");
 
-    // Move assignment operator takes the elements from list1 by value (rvalue reference)
+    // Move assignment operator takes the elements from list by value (rvalue reference)
     list2 = std::move(list);
 
-    // Verify list1 is now empty (moved elements)
+    // Verify list is now empty (moved elements)
     EXPECT_TRUE(list.Empty());
     EXPECT_EQ(list.Size(), 0);
 
-    // Verify list2 has the elements from list1 (replaced)
+    // Verify list2 has the elements from list (replaced)
     EXPECT_EQ(list2.Size(), 2);
     std::string expected[] = {"apple", "banana"};
     int i = 0;
