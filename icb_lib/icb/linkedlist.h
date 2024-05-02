@@ -56,6 +56,8 @@ namespace icb
 
         public:
             Iterator() = default;
+            Iterator(const self_type &other) = default;
+            self_type &operator=(const self_type &other)  = default;
 
             explicit Iterator(node_ptr ptr)
                 : m_Ptr(ptr)
@@ -63,14 +65,14 @@ namespace icb
             }
 
             // move ctor
-            Iterator(Iterator &&other) noexcept
+            Iterator(self_type &&other) noexcept
                 : m_Ptr(other.m_Ptr)
             {
                 other.m_Ptr = nullptr;
             }
             
             // move assignment
-            self_type &operator=(Iterator &&other) noexcept
+            self_type &operator=(self_type &&other) noexcept
             {
                 if (this != &other)
                 {

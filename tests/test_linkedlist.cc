@@ -195,6 +195,7 @@ TEST(ICBLinkedList, IteratorConcept)
 {
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::Iterator<int>>);
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::ConstIterator>);
+    static_assert(std::bidirectional_iterator<icb::LinkedList<int>::Iterator<int>>);
 }
 
 TEST_F(ICBLinkedListIntFixture, Iterator)
