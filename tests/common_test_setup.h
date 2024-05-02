@@ -3,12 +3,13 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
-#include "../utils/Timer.h"
+// breaks CI with std::chrono on Ubuntu Clang
+//#include "../utils/Timer.h" 
 
 class ICBTestFixture : public ::testing::Test
 {
 protected:
-    Timer timer;
+    //Timer timer;
     void SetUp() override
     {
     }
