@@ -56,9 +56,28 @@ namespace icb
 
         public:
             Iterator() = default;
+
             explicit Iterator(node_ptr ptr)
                 : m_Ptr(ptr)
             {
+            }
+
+            // move ctor
+            Iterator(Iterator &&other) noexcept
+                : m_Ptr(other.m_Ptr)
+            {
+                other.m_Ptr = nullptr;
+            }
+            
+            // move assignment
+            self_type &operator=(Iterator &&other) noexcept
+            {
+                if (this != &other)
+                {
+                    m_Ptr = other.m_Ptr;
+                    other.m_Ptr = nullptr;
+                }
+                return *this;
             }
 
             // prefix ++
