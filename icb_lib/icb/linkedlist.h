@@ -2,6 +2,7 @@
 
 #include <new>
 #include <iterator>
+#include <assert.h>
 
 namespace icb
 {
@@ -185,7 +186,8 @@ namespace icb
             {
                 Node *tmp = asNode(m_End.next);
                 m_End.next = m_End.next->next;
-                delete asNode(tmp);
+                asNode(tmp)->value.~ValueType();
+                ::operator delete(asNode(tmp), sizeof(Node));
             }
         }
 
@@ -405,7 +407,8 @@ namespace icb
             {
                 Node *tmp = asNode(m_End.next);
                 m_End.next = m_End.next->next;
-                delete asNode(tmp);
+                asNode(tmp)->value.~ValueType();
+                ::operator delete(asNode(tmp), sizeof(Node));
             }
 
             m_End.prev = &m_End;
