@@ -41,9 +41,9 @@ namespace icb
             }
         };
 
-    public:
+    private:
         template <typename AccessType = T>
-        class Iterator
+        class BaseIterator
         {
         public:
             using iterator_category = std::bidirectional_iterator_tag;
@@ -52,25 +52,25 @@ namespace icb
             using pointer = std::conditional_t<std::is_const_v<AccessType>, const T *, T *>;
             using reference = std::conditional_t<std::is_const_v<AccessType>, const T &, T &>;
             using node_ptr = std::conditional_t<std::is_const_v<AccessType>, const NodeLink *, NodeLink *>;
-            using self_type = Iterator<AccessType>;
+            using self_type = BaseIterator<AccessType>;
 
         public:
-            Iterator() = default;
-            Iterator(const self_type &other) = default;
-            self_type &operator=(const self_type &other)  = default;
+            BaseIterator() = default;
+            BaseIterator(const self_type &other) = default;
+            self_type &operator=(const self_type &other) = default;
 
-            explicit Iterator(node_ptr ptr)
+            explicit BaseIterator(node_ptr ptr)
                 : m_Ptr(ptr)
             {
             }
 
             // move ctor
-            Iterator(self_type &&other) noexcept
+            BaseIterator(self_type &&other) noexcept
                 : m_Ptr(other.m_Ptr)
             {
                 other.m_Ptr = nullptr;
             }
-            
+
             // move assignment
             self_type &operator=(self_type &&other) noexcept
             {
@@ -133,7 +133,8 @@ namespace icb
         };
 
     public:
-        using ConstIterator = Iterator<const T>;
+        using Iterator = BaseIterator<T>;
+        using ConstIterator = BaseIterator<const T>;
 
     public:
         LinkedList() = default;
@@ -223,7 +224,7 @@ namespace icb
             Node *newNode = new Node();
             newNode->value = value;
             newNode->next = &m_End;
-            if (m_End.prev)
+            if (m_Size)
             {
                 newNode->prev = m_End.prev;
                 m_End.prev->next = newNode;
@@ -243,7 +244,7 @@ namespace icb
             Node *newNode = new Node();
             newNode->value = std::move(value);
             newNode->next = &m_End;
-            if (m_End.prev)
+            if (m_Size)
             {
                 newNode->prev = m_End.prev;
                 m_End.prev->next = newNode;
@@ -263,7 +264,7 @@ namespace icb
             Node *newNode = new Node();
             new (&newNode->value) ValueType(std::forward<Args>(args)...);
             newNode->next = &m_End;
-            if (m_End.prev)
+            if (m_Size)
             {
                 newNode->prev = m_End.prev;
                 m_End.prev->next = newNode;
@@ -395,12 +396,12 @@ namespace icb
             return !m_Size;
         }
 
-        Iterator<T> begin() noexcept
+        Iterator begin() noexcept
         {
             return Iterator(m_End.next);
         }
 
-        Iterator<T> end() noexcept
+        Iterator end() noexcept
         {
             return Iterator(&m_End);
         }
