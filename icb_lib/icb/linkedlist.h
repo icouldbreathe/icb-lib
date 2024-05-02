@@ -42,16 +42,17 @@ namespace icb
         };
 
     public:
+        template <typename AccessType = T>
         class Iterator
         {
         public:
-            using self_type = Iterator;
-            using node_ptr = NodeLink *;
             using iterator_category = std::bidirectional_iterator_tag;
             using difference_type = std::ptrdiff_t;
             using value_type = T;
-            using pointer = T *;
-            using reference = T &;
+            using pointer = std::conditional_t<std::is_const_v<AccessType>, const T *, T *>;
+            using reference = std::conditional_t<std::is_const_v<AccessType>, const T &, T &>;
+            using node_ptr = std::conditional_t<std::is_const_v<AccessType>, const NodeLink *, NodeLink *>;
+            using self_type = Iterator<AccessType>;
 
         public:
             Iterator() = default;
@@ -110,73 +111,8 @@ namespace icb
             node_ptr m_Ptr;
         };
 
-        class ConstIterator
-        {
-        public:
-            using self_type = ConstIterator;
-            using node_ptr = const NodeLink *;
-            using iterator_category = std::bidirectional_iterator_tag;
-            using difference_type = std::ptrdiff_t;
-            using value_type = T;
-            using pointer = const T *;
-            using reference = const T &;
-
-        public:
-            ConstIterator() = default;
-            explicit ConstIterator(node_ptr ptr)
-                : m_Ptr(ptr)
-            {
-            }
-
-            // prefix ++
-            self_type &operator++() noexcept
-            {
-                m_Ptr = m_Ptr->next;
-                return *this;
-            }
-
-            // postfix ++
-            self_type operator++(int) noexcept
-            {
-                self_type previous = *this;
-                m_Ptr = m_Ptr->next;
-                return previous;
-            }
-
-            // prefix --
-            self_type &operator--() noexcept
-            {
-                m_Ptr = m_Ptr->prev;
-                return *this;
-            }
-
-            // postfix --
-            self_type operator--(int) noexcept
-            {
-                self_type previous = *this;
-                m_Ptr = m_Ptr->prev;
-                return previous;
-            }
-
-            reference operator*() const
-            {
-                assert(m_Ptr && "LinkedList::ConstIterator::operator* nullptr dereference");
-                return asNode(m_Ptr)->value;
-            }
-
-            friend bool operator==(const self_type &x, const self_type &y) noexcept
-            {
-                return x.m_Ptr == y.m_Ptr;
-            }
-
-            friend bool operator!=(const self_type &x, const self_type &y) noexcept
-            {
-                return x.m_Ptr != y.m_Ptr;
-            }
-
-        private:
-            node_ptr m_Ptr;
-        };
+    public:
+        using ConstIterator = Iterator<const T>;
 
     public:
         LinkedList() = default;
@@ -438,12 +374,12 @@ namespace icb
             return !m_Size;
         }
 
-        Iterator begin() noexcept
+        Iterator<T> begin() noexcept
         {
             return Iterator(m_End.next);
         }
 
-        Iterator end() noexcept
+        Iterator<T> end() noexcept
         {
             return Iterator(&m_End);
         }

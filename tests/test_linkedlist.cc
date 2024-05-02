@@ -193,7 +193,7 @@ TEST_F(ICBLinkedListStringFixture, MoveAssignment)
 
 TEST(ICBLinkedList, IteratorConcept)
 {
-    EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::Iterator>);
+    EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::Iterator<int>>);
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::ConstIterator>);
 }
 
