@@ -3,6 +3,7 @@
 #include <iostream>
 #include <initializer_list>
 #include <new>
+#include <assert.h>
 
 namespace icb
 {
