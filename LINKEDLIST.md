@@ -4,13 +4,9 @@ Templated doubly-linked linked list using sentinel node.
 
 ## Iterators
 
-* **Iterator** 
-    * Non-const iterator (modifies elements)
-    * `iterator_category`: bidirectional
-    * Overloads: move ctor, move assignment, `++`, `--` (prefix/postfix), `*`, `==`, `!=`
-    * Templated for const-correctness
-* **ConstIterator**
-    * Alias for `Iterator<const T>` (read-only)
+* `iterator_category`: bidirectional
+* Overloads: move ctor, move assignment, `++`, `--` (prefix/postfix), `*`, `==`, `!=`
+* Templated for const-correctness
 
 ## Constructors
 
