@@ -41,9 +41,9 @@ TEST_F(ICBVectorIntTestFixture, AtFunction) {
     test_vector.PushBack(5);
     test_vector.PushBack(15);
 
-    EXPECT_EQ(test_vector.at(0), 5);
+    EXPECT_EQ(test_vector.At(0), 5);
 
-    EXPECT_THROW(test_vector.at(2), std::out_of_range); 
+    EXPECT_THROW(test_vector.At(2), std::out_of_range); 
 }
 
 TEST_F(ICBVectorIntTestFixture, PushBack) {
@@ -57,4 +57,11 @@ TEST_F(ICBVectorStructTestFixture, EmplaceBack) {
     EXPECT_EQ(test_vector.Size(), 1);  
     EXPECT_EQ(test_vector[0].x, 10);
     EXPECT_EQ(test_vector[0].y, 20);
+}
+
+TEST_F(ICBTestFixture, RandomAccessIteratorConcept)
+{
+    static_assert(std::random_access_iterator<icb::Vector<int>::Iterator>);
+    EXPECT_TRUE(std::random_access_iterator<icb::Vector<int>::Iterator>);
+    EXPECT_TRUE(std::random_access_iterator<icb::Vector<int>::ConstIterator>);
 }
