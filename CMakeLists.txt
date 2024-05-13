@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(icb_lib)
 #add_executable(DS src/main.cpp)
-#target_link_libraries(DS PRIVATE icb_lib -fsanitize=address)
-#target_compile_options(DS PRIVATE -Werror -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -fsized-deallocation -fsanitize=address)
+#target_link_libraries(DS PRIVATE icb_lib -fsanitize=address -fsanitize=undefined)
+#target_compile_options(DS PRIVATE -Werror -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -fsized-deallocation -fsanitize=address -fsanitize=undefined)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -21,7 +21,8 @@ file(GLOB TEST_SOURCES "tests/*.cc" RECURSIVE TESTS)
 
 add_executable(all_tests ${TEST_SOURCES})
 
-target_link_libraries(all_tests PRIVATE icb_lib GTest::gtest_main)
+target_link_libraries(all_tests PRIVATE icb_lib GTest::gtest_main -fsanitize=address -fsanitize=undefined)
+target_compile_options(all_tests PRIVATE -Werror -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -fsized-deallocation -fsanitize=address -fsanitize=undefined)
 
 enable_testing()
 
