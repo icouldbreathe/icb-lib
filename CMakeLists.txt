@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.29)
 project(DS)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsized-deallocation")
+set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(icb_lib)
-#add_executable(DS src/main.cpp)
-#target_link_libraries(DS PRIVATE icb_lib)
+add_executable(DS src/main.cpp)
+target_link_libraries(DS PRIVATE icb_lib -fsanitize=address)
+target_compile_options(DS PRIVATE -Werror -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -fsized-deallocation -fsanitize=address)
 
 include(FetchContent)
 FetchContent_Declare(
