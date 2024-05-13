@@ -17,27 +17,27 @@ public:
     {
         m_allocMem += size;
         if (!m_silent)
-            std::cout << "\n\033[1;32m" << size << "\tbytes allocated at: \t" << ptr << "\033[0m" << std::endl;
+            std::cout << "\033[1;32m" << size << "\tbytes allocated at: \t" << ptr << "\033[0m" << std::endl;
     }
 
     void DeAlloc(void* ptr, size_t size)
     {
         m_deallocMem += size;
         if (!m_silent)
-            std::cout << "\n\033[1;31m" << size << "\tbytes deallocated at: \t" << ptr << "\033[0m" << std::endl;
+            std::cout << "\033[1;31m" << size << "\tbytes deallocated at: \t" << ptr << "\033[0m" << std::endl;
     }
 
     void DeAlloc(size_t size)
     {
         m_deallocMem += size;
         if (!m_silent)
-            std::cout << "\n\033[1;31m" << size << "\tbytes deallocated." << "\033[0m" << std::endl;
+            std::cout << "\033[1;31m" << size << "\tbytes deallocated." << "\033[0m" << std::endl;
     }
 
     void DeAlloc(void* ptr)
     {
         if (!m_silent)
-            std::cout << "\n\033[1;31mUnsized deallocated at: \t" << ptr << "\033[0m" << std::endl;
+            std::cout << "\033[1;31mUnsized deallocated at: \t" << ptr << "\033[0m" << std::endl;
     }
 
     void PrintMemory() const
@@ -67,39 +67,39 @@ private:
 };
 
 #if ALLOC_OVERRIDE == 1
-inline void* operator new[](size_t size)
+void* operator new[](size_t size)
 {
     void* ptr = malloc(size);
     MemoryProfiler::Get().Alloc(size, ptr);
     return ptr;
 }
 
-inline void* operator new(size_t size)
+void* operator new(size_t size)
 {
     void* ptr = malloc(size);
     MemoryProfiler::Get().Alloc(size, ptr);
     return ptr;
 }
 
-inline void operator delete(void* p, size_t size) noexcept
+void operator delete(void* p, size_t size) noexcept
 {
     MemoryProfiler::Get().DeAlloc(p, size);
     free(p);
 }
 
-inline void operator delete(void* p) noexcept
+void operator delete(void* p) noexcept
 {
     MemoryProfiler::Get().DeAlloc(p);
     free(p);
 }
 
-inline void operator delete[](void* p, size_t size) noexcept
+void operator delete[](void* p, size_t size) noexcept
 {
     MemoryProfiler::Get().DeAlloc(p, size);
     free(p);
 }
 
-inline void operator delete[](void* p) noexcept
+void operator delete[](void* p) noexcept
 {
     MemoryProfiler::Get().DeAlloc(p);
     free(p);
