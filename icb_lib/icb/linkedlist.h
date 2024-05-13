@@ -118,6 +118,11 @@ namespace icb
                 return asNode(m_Ptr)->value;
             }
 
+            node_ptr operator->() const
+            {
+                return asNode(m_Ptr);
+            }
+
             friend bool operator==(const self_type &x, const self_type &y) noexcept
             {
                 return x.m_Ptr == y.m_Ptr;
