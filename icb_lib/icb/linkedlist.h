@@ -381,24 +381,26 @@ namespace icb
             m_Size = 0;
         }
 
-        void Erase(Iterator position)
+        Iterator Erase(Iterator position)
         {
+            assert(getNodeLink(position) && "LinkedList::Erase invalid iterator");
+            assert(!Empty() && "LinkedList::Erase empty list");
+
             if (position == begin())
             {
                 PopFront();
-                return;
-            }
-            if (position == end())
-            {
-                PopBack();
-                return;
+                return begin();
             }
 
-            NodeLink *next = position.m_Ptr->next;
-            position.m_Ptr->prev->next = next;
-            next->prev = position.m_Ptr->prev;
+            NodeLink *next = getNodeLink(std::next(position));
+            getNodeLink(std::prev(position))->next = next;
+            next->prev = getNodeLink(position)->prev;
 
-            delete asNode(position.m_Ptr);
+            delete asNode(getNodeLink(position));
+
+            --m_Size;
+
+            return Iterator(next);
         }
 
         Reference Front() const noexcept
