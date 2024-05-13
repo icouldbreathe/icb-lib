@@ -342,6 +342,28 @@ namespace icb
             ++m_Size;
         }
 
+        void Splice(Iterator position, LinkedList &other, Iterator it)
+        {
+            assert(getNodeLink(position) && getNodeLink(it) && "LinkedList::Splice invalid iterators");
+            assert(!other.Empty() && "LinkedList::Splice attempt to splice an empty list");
+            assert(it != other.end() && "LinkedList::Splice splicing the end node is undefined behavior");
+
+            NodeLink *prev = getNodeLink(std::prev(position));
+            NodeLink *next = getNodeLink(position);
+
+            prev->next = getNodeLink(it);
+            next->prev = getNodeLink(it);
+
+            getNodeLink(std::prev(it))->next = getNodeLink(it)->next;
+            getNodeLink(std::next(it))->prev = getNodeLink(it)->prev;
+
+            getNodeLink(it)->prev = prev;
+            getNodeLink(it)->next = next;
+
+            --other.m_Size;
+            ++m_Size;
+        }
+
         void PopFront()
         {
             assert(m_Size && "LinkedList::PopFront empty list");
