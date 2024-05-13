@@ -464,6 +464,16 @@ namespace icb
             return static_cast<const NodeLink *>(node);
         }
 
+        static inline NodeLink* getNodeLink(Iterator it) noexcept
+        {
+            return it.m_Ptr;
+        }
+
+        static inline const NodeLink* getNodeLink(ConstIterator it) noexcept
+        {
+            return it.m_Ptr;
+        }
+
     private:
         NodeLink m_End{&m_End, &m_End};
         SizeType m_Size = 0;
