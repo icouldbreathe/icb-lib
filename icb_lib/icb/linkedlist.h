@@ -128,6 +128,8 @@ namespace icb
                 return x.m_Ptr != y.m_Ptr;
             }
 
+            friend class LinkedList;
+
         private:
             node_ptr m_Ptr;
         };
@@ -372,6 +374,26 @@ namespace icb
             m_End.prev = &m_End;
             m_End.next = &m_End;
             m_Size = 0;
+        }
+
+        void Erase(Iterator position)
+        {
+            if (position == begin())
+            {
+                PopFront();
+                return;
+            }
+            if (position == end())
+            {
+                PopBack();
+                return;
+            }
+
+            NodeLink *next = position.m_Ptr->next;
+            position.m_Ptr->prev->next = next;
+            next->prev = position.m_Ptr->prev;
+
+            delete asNode(position.m_Ptr);
         }
 
         Reference Front() const noexcept
