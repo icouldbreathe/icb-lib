@@ -43,7 +43,7 @@ TEST_F(ICBVectorIntTestFixture, AtFunction) {
 
     EXPECT_EQ(test_vector.At(0), 5);
 
-    //EXPECT_THROW(test_vector.At(2), std::out_of_range); 
+    EXPECT_THROW(test_vector.At(2), std::out_of_range); 
 }
 
 TEST_F(ICBVectorIntTestFixture, PushBack) {
