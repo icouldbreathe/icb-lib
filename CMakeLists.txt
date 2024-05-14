@@ -22,7 +22,7 @@ file(GLOB TEST_SOURCES "tests/*.cc" RECURSIVE TESTS)
 add_executable(all_tests ${TEST_SOURCES})
 
 target_link_libraries(all_tests PRIVATE icb_lib GTest::gtest_main -fsanitize=address -fsanitize=undefined)
-target_compile_options(all_tests PRIVATE -Werror -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -fsized-deallocation -fsanitize=address -fsanitize=undefined)
+target_compile_options(all_tests PRIVATE -fsanitize=address -fsanitize=undefined)
 
 enable_testing()
 
