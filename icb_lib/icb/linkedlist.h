@@ -3,6 +3,7 @@
 #include <new>
 #include <iterator>
 #include <assert.h>
+#include <type_traits>
 
 namespace icb
 {
@@ -56,31 +57,21 @@ namespace icb
 
         public:
             BaseIterator() = default;
-            BaseIterator(const self_type &other) = default;
-            self_type &operator=(const self_type &other) = default;
 
             explicit BaseIterator(node_ptr ptr)
                 : m_Ptr(ptr)
             {
             }
 
-            // move ctor
-            BaseIterator(self_type &&other) noexcept
-                : m_Ptr(other.m_Ptr)
-            {
-                other.m_Ptr = nullptr;
-            }
-
-            // move assignment
-            self_type &operator=(self_type &&other) noexcept
-            {
-                if (this != &other)
-                {
-                    m_Ptr = other.m_Ptr;
-                    other.m_Ptr = nullptr;
-                }
-                return *this;
-            }
+            /**
+             * @brief SFINAE copy ctor for implicit conversion between const Iterator and Iterator
+             * 
+             * @tparam WasAccessType The source type
+             * @tparam std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>> SFINAE
+             * @param other 
+             */
+            template<typename WasAccessType, class = std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>>>
+            BaseIterator(const BaseIterator<WasAccessType> &other) noexcept : m_Ptr(other.m_Ptr) {}
 
             // prefix ++
             self_type &operator++() noexcept

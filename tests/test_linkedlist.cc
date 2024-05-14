@@ -1,5 +1,6 @@
 #include <list>
 #include <string>
+#include <type_traits>
 #include "icb/linkedlist.h"
 
 #include "common_test_setup.h"
@@ -197,7 +198,15 @@ TEST(ICBLinkedList, IteratorConcept)
 {
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::Iterator>);
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::ConstIterator>);
+    
     static_assert(std::bidirectional_iterator<icb::LinkedList<int>::Iterator>);
+
+    static_assert(std::is_copy_constructible_v<icb::LinkedList<int>::Iterator>);
+    static_assert(std::is_trivially_copy_constructible_v<icb::LinkedList<int>::Iterator>);
+
+    static_assert(std::is_copy_constructible_v<icb::LinkedList<int>::ConstIterator>);
+    static_assert(std::is_trivially_copy_constructible_v<icb::LinkedList<int>::ConstIterator>);
+
 }
 
 TEST_F(ICBLinkedListIntFixture, Iterator)

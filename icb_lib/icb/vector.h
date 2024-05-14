@@ -36,6 +36,16 @@ namespace icb
             {
             }
 
+            /**
+             * @brief SFINAE copy ctor for implicit conversion between const Iterator and Iterator
+             * 
+             * @tparam WasAccessType The source type
+             * @tparam std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>> SFINAE
+             * @param other 
+             */
+            template<typename WasAccessType, class = std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>>>
+            BaseIterator(const BaseIterator<WasAccessType> &other) noexcept : m_Ptr(other.m_Ptr) {}
+
             // Prefix operator++
             self_type &operator++() noexcept
             {

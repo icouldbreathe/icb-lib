@@ -64,4 +64,10 @@ TEST_F(ICBTestFixture, RandomAccessIteratorConcept)
     static_assert(std::random_access_iterator<icb::Vector<int>::Iterator>);
     EXPECT_TRUE(std::random_access_iterator<icb::Vector<int>::Iterator>);
     EXPECT_TRUE(std::random_access_iterator<icb::Vector<int>::ConstIterator>);
+
+    static_assert(std::is_copy_constructible_v<icb::Vector<int>::Iterator>);
+    static_assert(std::is_trivially_copy_constructible_v<icb::Vector<int>::Iterator>);
+
+    static_assert(std::is_copy_constructible_v<icb::Vector<int>::ConstIterator>);
+    static_assert(std::is_trivially_copy_constructible_v<icb::Vector<int>::ConstIterator>);
 }
