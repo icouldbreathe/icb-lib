@@ -4,9 +4,8 @@ project(DS)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(icb_lib)
-#add_executable(DS src/main.cpp)
-#target_link_libraries(DS PRIVATE icb_lib -fsanitize=address -fsanitize=undefined)
-#target_compile_options(DS PRIVATE -Werror -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -fsized-deallocation -fsanitize=address -fsanitize=undefined)
+add_executable(DS src/main.cpp)
+target_link_libraries(DS PRIVATE icb_lib)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -17,10 +16,9 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-file(GLOB TEST_SOURCES "tests/*.cc" RECURSIVE TESTS)
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "tests/*.cc" RECURSIVE TESTS)
 
 add_executable(all_tests ${TEST_SOURCES})
-
 target_link_libraries(all_tests PRIVATE icb_lib GTest::gtest_main)
 
 enable_testing()
