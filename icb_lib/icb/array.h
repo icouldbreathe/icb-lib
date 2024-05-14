@@ -8,30 +8,8 @@ namespace icb
     class Array
     {
     public:
-        Array() = default;
+        [[deprecated("Not implemented, undelete this ctor")]] Array() = delete;
         ~Array() = default;
-
-        Array(std::initializer_list<T> &&list)
-        {
-            int i = 0;
-            for (auto value : list)
-            {
-                m_Data[i] = value;
-                ++i;
-            }
-        }
-
-        T &operator[](size_t index)
-        {
-            assert(!(index >= SIZE));
-            return m_Data[index];
-        }
-
-        const T &operator[](size_t index) const
-        {
-            assert(!(index >= SIZE));
-            return m_Data[index];
-        }
 
         constexpr size_t Size() const
         {
@@ -39,6 +17,6 @@ namespace icb
         }
 
     private:
-        T m_Data[SIZE];
+        T m_data[SIZE];
     };
 } // namespace icb
