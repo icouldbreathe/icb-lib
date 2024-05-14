@@ -366,7 +366,7 @@ namespace icb
 
         void PopFront()
         {
-            assert(m_Size && "LinkedList::PopFront empty list");
+            assert(!Empty() && "LinkedList::PopFront empty list");
             Node *second = asNode(m_End.next->next);
             asNode(m_End.next)->value.~ValueType();
             ::operator delete(asNode(m_End.next), sizeof(Node));
@@ -377,7 +377,7 @@ namespace icb
 
         void PopBack()
         {
-            assert(m_Size && "LinkedList::PopBack empty list");
+            assert(!Empty() && "LinkedList::PopBack empty list");
             Node *previous = asNode(m_End.prev->prev);
             previous->next = &m_End;
             asNode(m_End.prev)->value.~ValueType();
