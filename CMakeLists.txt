@@ -19,7 +19,7 @@ FetchContent_MakeAvailable(googletest)
 file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "tests/*.cc" RECURSIVE TESTS)
 
 add_executable(all_tests ${TEST_SOURCES})
-target_link_libraries(all_tests PRIVATE icb_lib GTest::gtest_main)
+target_link_libraries(all_tests PRIVATE icb_lib SYSTEM GTest::gtest_main)
 
 enable_testing()
 
