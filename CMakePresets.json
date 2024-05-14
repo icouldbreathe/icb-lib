@@ -30,7 +30,6 @@
         "name": "cl",
         "displayName": "MSVC",
         "description": "Default build options for MSVC",
-        "generator": "Ninja",
         "binaryDir": "${sourceDir}/build",
         "cacheVariables": {
           "CMAKE_CXX_FLAGS": "/Wall /Wx /fsanitize=address /fsanitize=leak /fsanitize=memory /fsanitize=undefined"
