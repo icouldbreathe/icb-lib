@@ -23,7 +23,7 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/build",
         "cacheVariables": {
-          "CMAKE_CXX_FLAGS": "-Werror -pedantic-errors -Wall -Wextra -fsized-deallocation -fsanitize=address -fsanitize=undefined"
+          "CMAKE_CXX_FLAGS": "-stdlib=libc++ -std=c++20 -Werror -pedantic-errors -Wall -Wextra -fsized-deallocation -fsanitize=address -fsanitize=undefined"
         }
       },
       {
