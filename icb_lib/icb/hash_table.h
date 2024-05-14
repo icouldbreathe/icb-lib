@@ -22,8 +22,6 @@ namespace icb
         using Chain = icb::LinkedList<Pair>;
         using Table = icb::Vector<Chain>;
 
-    private:
-
     public:
         HashTable(const SizeType &capacity = HT_INIT_CAPACITY)
             : m_capacity(capacity)
@@ -149,9 +147,6 @@ namespace icb
 
         SizeType Size() const
         {
-            int *t = new int;
-            *t = 4;
-            delete t;
             return m_elements;
         }
 
