@@ -4,8 +4,8 @@ project(DS)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(icb_lib)
-add_executable(DS src/main.cpp)
-target_link_libraries(DS PRIVATE icb_lib)
+#add_executable(DS src/main.cpp)
+#target_link_libraries(DS PRIVATE icb_lib)
 
 include(FetchContent)
 FetchContent_Declare(
