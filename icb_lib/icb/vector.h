@@ -32,7 +32,7 @@ namespace icb
             BaseIterator() = default;
 
             BaseIterator(pointer ptr) noexcept
-                : m_Ptr(ptr)
+                : m_ptr(ptr)
             {
             }
 
@@ -44,12 +44,12 @@ namespace icb
              * @param other 
              */
             template<typename WasAccessType, class = std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>>>
-            BaseIterator(const BaseIterator<WasAccessType> &other) noexcept : m_Ptr(other.m_Ptr) {}
+            BaseIterator(const BaseIterator<WasAccessType> &other) noexcept : m_ptr(other.m_ptr) {}
 
             // Prefix operator++
             self_type &operator++() noexcept
             {
-                m_Ptr++;
+                m_ptr++;
                 return *this;
             }
 
@@ -63,7 +63,7 @@ namespace icb
 
             self_type &operator--() noexcept
             {
-                m_Ptr--;
+                m_ptr--;
                 return *this;
             }
 
@@ -76,43 +76,43 @@ namespace icb
 
             self_type &operator+=(SizeType offset) noexcept
             {
-                m_Ptr += offset;
+                m_ptr += offset;
                 return *this;
             }
 
             self_type &operator-=(SizeType offset) noexcept
             {
-                m_Ptr -= offset;
+                m_ptr -= offset;
                 return *this;
             }
 
             self_type operator+(SizeType offset) const noexcept
             {
                 self_type result(*this);
-                result.m_Ptr += offset;
+                result.m_ptr += offset;
                 return result;
             }
 
             self_type operator-(SizeType offset) const noexcept
             {
                 self_type result(*this);
-                result.m_Ptr -= offset;
+                result.m_ptr -= offset;
                 return result;
             }
 
             reference operator[](SizeType index) const noexcept
             {
-                return *(m_Ptr + index);
+                return *(m_ptr + index);
             }
 
             pointer operator->() const noexcept
             {
-                return m_Ptr;
+                return m_ptr;
             }
 
             reference operator*() const noexcept
             {
-                return *m_Ptr;
+                return *m_ptr;
             }
 
             friend self_type operator+(SizeType offset, const self_type &iter)
@@ -122,33 +122,33 @@ namespace icb
 
             friend difference_type operator+(self_type const &lhs, self_type const &rhs)
             {
-                return lhs.m_Ptr + rhs.m_Ptr;
+                return lhs.m_ptr + rhs.m_ptr;
             }
 
             friend difference_type operator-(self_type const &lhs, self_type const &rhs)
             {
-                return lhs.m_Ptr - rhs.m_Ptr;
+                return lhs.m_ptr - rhs.m_ptr;
             }
 
-            bool operator<(self_type const &rhs) const { return m_Ptr < rhs.m_Ptr; }
-            bool operator<=(self_type const &rhs) const { return m_Ptr <= rhs.m_Ptr; }
-            bool operator>(self_type const &rhs) const { return m_Ptr > rhs.m_Ptr; }
-            bool operator>=(self_type const &rhs) const { return m_Ptr >= rhs.m_Ptr; }
+            bool operator<(self_type const &rhs) const { return m_ptr < rhs.m_ptr; }
+            bool operator<=(self_type const &rhs) const { return m_ptr <= rhs.m_ptr; }
+            bool operator>(self_type const &rhs) const { return m_ptr > rhs.m_ptr; }
+            bool operator>=(self_type const &rhs) const { return m_ptr >= rhs.m_ptr; }
 
             friend bool operator==(const self_type &lhs, const self_type &rhs) noexcept
             {
-                return lhs.m_Ptr == rhs.m_Ptr;
+                return lhs.m_ptr == rhs.m_ptr;
             }
 
             friend bool operator!=(const self_type &lhs, const self_type &rhs) noexcept
             {
-                return lhs.m_Ptr != rhs.m_Ptr;
+                return lhs.m_ptr != rhs.m_ptr;
             }
 
             friend class Vector<T>;
 
         private:
-            pointer m_Ptr;
+            pointer m_ptr;
         };
 
     public:
@@ -181,9 +181,9 @@ namespace icb
         // move ctor
         Vector(Vector &&other) noexcept
         {
-            std::swap(m_Data, other.m_Data);
-            std::swap(m_Size, other.m_Size);
-            std::swap(m_Capacity, other.m_Capacity);
+            std::swap(m_data, other.m_data);
+            std::swap(m_size, other.m_size);
+            std::swap(m_capacity, other.m_capacity);
         }
 
         // move assignment
@@ -191,9 +191,9 @@ namespace icb
         {
             if (this != &other)
             {
-                std::swap(m_Data, other.m_Data);
-                std::swap(m_Size, other.m_Size);
-                std::swap(m_Capacity, other.m_Capacity);
+                std::swap(m_data, other.m_data);
+                std::swap(m_size, other.m_size);
+                std::swap(m_capacity, other.m_capacity);
             }
 
             return *this;
@@ -209,45 +209,45 @@ namespace icb
 
             if (other.Size())
             {
-                if (other.Capacity() > m_Capacity)
+                if (other.Capacity() > m_capacity)
                 {
                     ValueType *newData = new ValueType[other.Capacity()];
 
-                    for (SizeType i = 0; i < m_Size; ++i)
+                    for (SizeType i = 0; i < m_size; ++i)
                     {
-                        newData[i] = other.m_Data[i];
+                        newData[i] = other.m_data[i];
                     }
 
-                    delete[] m_Data;
-                    m_Data = newData;
-                    m_Capacity = other.Capacity();
+                    delete[] m_data;
+                    m_data = newData;
+                    m_capacity = other.Capacity();
                 }
-                m_Size = other.Size();
+                m_size = other.Size();
             }
 
             return *this;
         }
 
-        SizeType Size() const noexcept { return m_Size; }
-        SizeType Capacity() const noexcept { return m_Capacity; }
+        SizeType Size() const noexcept { return m_size; }
+        SizeType Capacity() const noexcept { return m_capacity; }
 
         ValueType &operator[](SizeType index) noexcept
         {
-            assert(index < m_Size);
-            return m_Data[index];
+            assert(index < m_size);
+            return m_data[index];
         }
         const ValueType &operator[](SizeType index) const noexcept
         {
-            assert(index < m_Size);
-            return m_Data[index];
+            assert(index < m_size);
+            return m_data[index];
         }
 
-        ValueType *Data() { return m_Data; }
-        const ValueType *Data() const { return m_Data; }
+        ValueType *Data() { return m_data; }
+        const ValueType *Data() const { return m_data; }
 
         void Reserve(SizeType newCapacity)
         {
-            if (newCapacity > m_Capacity)
+            if (newCapacity > m_capacity)
             {
                 reallocate(newCapacity);
             }
@@ -255,60 +255,60 @@ namespace icb
 
         void Resize(SizeType newSize)
         {
-            if (newSize == m_Size)
+            if (newSize == m_size)
                 return;
 
-            if (newSize > m_Size)
+            if (newSize > m_size)
             {
-                if (newSize > m_Capacity)
+                if (newSize > m_capacity)
                 {
                     reallocate(newSize + (newSize + 2) / 2);
                 }
 
-                for (SizeType i = m_Size; i < newSize; ++i)
+                for (SizeType i = m_size; i < newSize; ++i)
                 {
-                    new (&m_Data[i]) ValueType();
+                    new (&m_data[i]) ValueType();
                 }
             }
 
-            if (newSize < m_Size)
+            if (newSize < m_size)
             {
-                for (SizeType i = m_Size - 1; i >= newSize; --i)
+                for (SizeType i = m_size - 1; i >= newSize; --i)
                 {
-                    m_Data[i].~ValueType();
+                    m_data[i].~ValueType();
                 }
             }
 
-            m_Size = newSize;
+            m_size = newSize;
         }
 
         void Resize(SizeType newSize, const ValueType &value)
         {
-            if (newSize == m_Size)
+            if (newSize == m_size)
                 return;
 
-            if (newSize > m_Size)
+            if (newSize > m_size)
             {
-                if (newSize > m_Capacity)
+                if (newSize > m_capacity)
                 {
                     reallocate(newSize + (newSize + 2) / 2);
                 }
 
-                for (SizeType i = m_Size; i < newSize; ++i)
+                for (SizeType i = m_size; i < newSize; ++i)
                 {
-                    m_Data[i] = std::move(value);
+                    m_data[i] = std::move(value);
                 }
             }
 
-            if (newSize < m_Size)
+            if (newSize < m_size)
             {
-                for (SizeType i = m_Size - 1; i >= newSize; --i)
+                for (SizeType i = m_size - 1; i >= newSize; --i)
                 {
-                    m_Data[i].~ValueType();
+                    m_data[i].~ValueType();
                 }
             }
 
-            m_Size = newSize;
+            m_size = newSize;
         }
 
         [[deprecated("not implemented")]] void Insert([[maybe_unused]] Iterator position, [[maybe_unused]] ValueType value)
@@ -323,100 +323,100 @@ namespace icb
             {
                 std::copy(position + 1, end(), position);
             }
-            --m_Size;
+            --m_size;
             return position;
         }
 
         void Clear()
         {
-            for (SizeType i = 0; i < m_Size; ++i)
+            for (SizeType i = 0; i < m_size; ++i)
             {
-                m_Data[i].~ValueType();
+                m_data[i].~ValueType();
             }
 
-            m_Size = 0;
+            m_size = 0;
         }
 
         void PushBack(const ValueType &value)
         {
-            if (m_Size >= m_Capacity)
-                reallocate(m_Capacity + (m_Capacity + 2) / 2);
+            if (m_size >= m_capacity)
+                reallocate(m_capacity + (m_capacity + 2) / 2);
 
-            m_Data[m_Size] = value;
-            ++m_Size;
+            m_data[m_size] = value;
+            ++m_size;
         }
 
         void PushBack(ValueType &&value)
         {
-            if (m_Size >= m_Capacity)
-                reallocate(m_Capacity + (m_Capacity + 2) / 2);
+            if (m_size >= m_capacity)
+                reallocate(m_capacity + (m_capacity + 2) / 2);
 
-            m_Data[m_Size] = std::move(value);
-            ++m_Size;
+            m_data[m_size] = std::move(value);
+            ++m_size;
         }
 
         template <typename... Args>
         ValueType &EmplaceBack(Args &&...args)
         {
-            if (m_Size >= m_Capacity)
-                reallocate(m_Capacity + (m_Capacity + 2) / 2);
+            if (m_size >= m_capacity)
+                reallocate(m_capacity + (m_capacity + 2) / 2);
 
-            new (&m_Data[m_Size]) ValueType(std::forward<Args>(args)...);
-            // m_Data[m_Size] = ValueType(std::forward<Args>(args)...);
+            new (&m_data[m_size]) ValueType(std::forward<Args>(args)...);
+            // m_data[m_size] = ValueType(std::forward<Args>(args)...);
             /*
-             * Instead of constructing ValueType in the stack frame of EmplaceBack() and then moving it to m_Data,
-             * we can use placement new, where we provide a valid address inside m_Data where the construction
+             * Instead of constructing ValueType in the stack frame of EmplaceBack() and then moving it to m_data,
+             * we can use placement new, where we provide a valid address inside m_data where the construction
              * would take place.
              */
-            ++m_Size;
-            return m_Data[m_Size];
+            ++m_size;
+            return m_data[m_size];
         }
 
         void PopBack()
         {
-            if (m_Size > 0)
+            if (m_size > 0)
             {
-                --m_Size;
-                m_Data[m_Size].~ValueType();
+                --m_size;
+                m_data[m_size].~ValueType();
             }
         }
 
         ValueType &At(SizeType index)
         {
-            if (index >= m_Size)
+            if (index >= m_size)
             {
                 throw std::out_of_range("Vector::at: index out of range");
             }
-            return m_Data[index];
+            return m_data[index];
         }
 
         const ValueType &At(SizeType index) const
         {
-            if (index >= m_Size)
+            if (index >= m_size)
             {
                 throw std::out_of_range("Vector::at: index out of range");
             }
-            return m_Data[index];
+            return m_data[index];
         }
 
         Iterator begin()
         {
-            return Iterator(m_Data);
+            return Iterator(m_data);
         }
 
         Iterator end()
         {
-            return Iterator(m_Data + m_Size);
+            return Iterator(m_data + m_size);
         }
 
         ConstIterator cbegin()
         {
-            return ConstIterator(m_Data);
+            return ConstIterator(m_data);
         }
 
         ConstIterator cend()
         {
-            return ConstIterator(m_Data + m_Size);
+            return ConstIterator(m_data + m_size);
         }
 
         ~Vector()
@@ -429,10 +429,10 @@ namespace icb
              * If delete[] gets called here, it would also call that same destructor again.
              * Which would try to free memory which has been already freed.
              *
-             * This happens because delete[] will not stop at our m_Size like our Clear function does.
+             * This happens because delete[] will not stop at our m_size like our Clear function does.
              */
             Clear();                                                   // Clear will call all the destructors
-            ::operator delete(m_Data, m_Capacity * sizeof(ValueType)); // this delete will not call any destructors.
+            ::operator delete(m_data, m_capacity * sizeof(ValueType)); // this delete will not call any destructors.
         }
 
     private:
@@ -451,13 +451,13 @@ namespace icb
 
             // for downsizing, otherwise would cause an overflow.
             // could argue that this is not the responsibility of this function though.
-            if (newCapacity < m_Size)
-                m_Size = newCapacity;
+            if (newCapacity < m_size)
+                m_size = newCapacity;
 
-            for (SizeType i = 0; i < m_Size; ++i)
+            for (SizeType i = 0; i < m_size; ++i)
             {
-                new (&newData[i]) ValueType(std::move(m_Data[i]));
-                // newData[i] = std::move(m_Data[i]);
+                new (&newData[i]) ValueType(std::move(m_data[i]));
+                // newData[i] = std::move(m_data[i]);
                 /*
                  * Can't use the assigment operator, either copy or move.
                  * Assignment operator requires newData[i] object to actually exist,
@@ -467,23 +467,23 @@ namespace icb
             }
 
             /*
-             * Everything that has been moved to newData is safe, and we can call the destructors on m_Data here.
+             * Everything that has been moved to newData is safe, and we can call the destructors on m_data here.
              *
              */
-            for (SizeType i = 0; i < m_Size; ++i)
+            for (SizeType i = 0; i < m_size; ++i)
             {
-                m_Data[i].~ValueType();
+                m_data[i].~ValueType();
             }
-            if (m_Capacity)
-                ::operator delete(m_Data, m_Capacity * sizeof(ValueType));
+            if (m_capacity)
+                ::operator delete(m_data, m_capacity * sizeof(ValueType));
 
-            m_Data = newData;
-            m_Capacity = newCapacity;
+            m_data = newData;
+            m_capacity = newCapacity;
         }
 
     private:
-        ValueType *m_Data = nullptr;
-        SizeType m_Size = 0;
-        SizeType m_Capacity = 0;
+        ValueType *m_data = nullptr;
+        SizeType m_size = 0;
+        SizeType m_capacity = 0;
     };
 } // namespace icb

@@ -59,7 +59,7 @@ namespace icb
             BaseIterator() = default;
 
             explicit BaseIterator(node_ptr ptr)
-                : m_Ptr(ptr)
+                : m_ptr(ptr)
             {
             }
 
@@ -71,12 +71,12 @@ namespace icb
              * @param other 
              */
             template<typename WasAccessType, class = std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>>>
-            BaseIterator(const BaseIterator<WasAccessType> &other) noexcept : m_Ptr(other.m_Ptr) {}
+            BaseIterator(const BaseIterator<WasAccessType> &other) noexcept : m_ptr(other.m_ptr) {}
 
             // prefix ++
             self_type &operator++() noexcept
             {
-                m_Ptr = m_Ptr->next;
+                m_ptr = m_ptr->next;
                 return *this;
             }
 
@@ -84,14 +84,14 @@ namespace icb
             self_type operator++(int) noexcept
             {
                 self_type previous = *this;
-                m_Ptr = m_Ptr->next;
+                m_ptr = m_ptr->next;
                 return previous;
             }
 
             // prefix --
             self_type &operator--() noexcept
             {
-                m_Ptr = m_Ptr->prev;
+                m_ptr = m_ptr->prev;
                 return *this;
             }
 
@@ -99,35 +99,35 @@ namespace icb
             self_type operator--(int) noexcept
             {
                 self_type previous = *this;
-                m_Ptr = m_Ptr->prev;
+                m_ptr = m_ptr->prev;
                 return previous;
             }
 
             reference operator*() const
             {
-                assert(m_Ptr && "LinkedList::Iterator::operator* nullptr dereference");
-                return asNode(m_Ptr)->value;
+                assert(m_ptr && "LinkedList::Iterator::operator* nullptr dereference");
+                return asNode(m_ptr)->value;
             }
 
             node_ptr operator->() const
             {
-                return asNode(m_Ptr);
+                return asNode(m_ptr);
             }
 
             friend bool operator==(const self_type &x, const self_type &y) noexcept
             {
-                return x.m_Ptr == y.m_Ptr;
+                return x.m_ptr == y.m_ptr;
             }
 
             friend bool operator!=(const self_type &x, const self_type &y) noexcept
             {
-                return x.m_Ptr != y.m_Ptr;
+                return x.m_ptr != y.m_ptr;
             }
 
             friend class LinkedList;
 
         private:
-            node_ptr m_Ptr;
+            node_ptr m_ptr;
         };
 
     public:
@@ -138,10 +138,10 @@ namespace icb
         LinkedList() = default;
         ~LinkedList()
         {
-            while (m_End.next != &m_End)
+            while (m_end.next != &m_end)
             {
-                Node *tmp = asNode(m_End.next);
-                m_End.next = m_End.next->next;
+                Node *tmp = asNode(m_end.next);
+                m_end.next = m_end.next->next;
                 asNode(tmp)->value.~ValueType();
                 ::operator delete(asNode(tmp), sizeof(Node));
             }
@@ -170,16 +170,16 @@ namespace icb
         {
             if (this != &other)
             {
-                m_End = other.m_End;
-                m_Size = other.m_Size;
+                m_end = other.m_end;
+                m_size = other.m_size;
 
-                m_End.next->prev = &m_End;
-                m_End.prev->next = &m_End;
+                m_end.next->prev = &m_end;
+                m_end.prev->next = &m_end;
 
-                other.m_End.prev = &other.m_End;
-                other.m_End.next = &other.m_End;
+                other.m_end.prev = &other.m_end;
+                other.m_end.next = &other.m_end;
 
-                other.m_Size = 0;
+                other.m_size = 0;
             }
         }
 
@@ -203,15 +203,15 @@ namespace icb
             if (this != &other)
             {
                 Clear();
-                m_End = other.m_End;
-                m_Size = other.m_Size;
+                m_end = other.m_end;
+                m_size = other.m_size;
 
-                m_End.next->prev = &m_End;
-                m_End.prev->next = &m_End;
+                m_end.next->prev = &m_end;
+                m_end.prev->next = &m_end;
 
-                other.m_End.next = &other.m_End;
-                other.m_End.prev = &other.m_End;
-                other.m_Size = 0;
+                other.m_end.next = &other.m_end;
+                other.m_end.prev = &other.m_end;
+                other.m_size = 0;
             }
             return *this;
         }
@@ -221,19 +221,19 @@ namespace icb
         {
             Node *newNode = new Node();
             newNode->value = value;
-            newNode->next = &m_End;
-            if (m_Size)
+            newNode->next = &m_end;
+            if (m_size)
             {
-                newNode->prev = m_End.prev;
-                m_End.prev->next = newNode;
+                newNode->prev = m_end.prev;
+                m_end.prev->next = newNode;
             }
             else
             {
-                newNode->prev = &m_End;
-                m_End.next = newNode;
+                newNode->prev = &m_end;
+                m_end.next = newNode;
             }
-            m_End.prev = newNode;
-            ++m_Size;
+            m_end.prev = newNode;
+            ++m_size;
         }
 
         // move
@@ -241,19 +241,19 @@ namespace icb
         {
             Node *newNode = new Node();
             newNode->value = std::move(value);
-            newNode->next = &m_End;
-            if (m_Size)
+            newNode->next = &m_end;
+            if (m_size)
             {
-                newNode->prev = m_End.prev;
-                m_End.prev->next = newNode;
+                newNode->prev = m_end.prev;
+                m_end.prev->next = newNode;
             }
             else
             {
-                newNode->prev = &m_End;
-                m_End.next = newNode;
+                newNode->prev = &m_end;
+                m_end.next = newNode;
             }
-            m_End.prev = newNode;
-            ++m_Size;
+            m_end.prev = newNode;
+            ++m_size;
         }
 
         template <typename... Args>
@@ -261,19 +261,19 @@ namespace icb
         {
             Node *newNode = new Node();
             new (&newNode->value) ValueType(std::forward<Args>(args)...);
-            newNode->next = &m_End;
-            if (m_Size)
+            newNode->next = &m_end;
+            if (m_size)
             {
-                newNode->prev = m_End.prev;
-                m_End.prev->next = newNode;
+                newNode->prev = m_end.prev;
+                m_end.prev->next = newNode;
             }
             else
             {
-                newNode->prev = &m_End;
-                m_End.next = newNode;
+                newNode->prev = &m_end;
+                m_end.next = newNode;
             }
-            m_End.prev = newNode;
-            ++m_Size;
+            m_end.prev = newNode;
+            ++m_size;
         }
 
         // copy
@@ -281,18 +281,18 @@ namespace icb
         {
             Node *newNode = new Node();
             newNode->value = value;
-            newNode->next = m_End.next;
-            newNode->prev = &m_End;
-            if (m_Size)
+            newNode->next = m_end.next;
+            newNode->prev = &m_end;
+            if (m_size)
             {
-                m_End.next->prev = newNode;
+                m_end.next->prev = newNode;
             }
             else
             {
-                m_End.prev = newNode;
+                m_end.prev = newNode;
             }
-            m_End.next = newNode;
-            ++m_Size;
+            m_end.next = newNode;
+            ++m_size;
         }
 
         // move
@@ -300,18 +300,18 @@ namespace icb
         {
             Node *newNode = new Node();
             newNode->value = std::move(value);
-            newNode->next = m_End.next;
-            newNode->prev = &m_End;
-            if (m_Size)
+            newNode->next = m_end.next;
+            newNode->prev = &m_end;
+            if (m_size)
             {
-                m_End.next->prev = newNode;
+                m_end.next->prev = newNode;
             }
             else
             {
-                m_End.prev = newNode;
+                m_end.prev = newNode;
             }
-            m_End.next = newNode;
-            ++m_Size;
+            m_end.next = newNode;
+            ++m_size;
         }
 
         template <typename... Args>
@@ -319,18 +319,18 @@ namespace icb
         {
             Node *newNode = new Node();
             new (&newNode->value) ValueType(std::forward<Args>(args)...);
-            newNode->next = m_End.next;
-            newNode->prev = &m_End;
-            if (m_Size)
+            newNode->next = m_end.next;
+            newNode->prev = &m_end;
+            if (m_size)
             {
-                m_End.next->prev = newNode;
+                m_end.next->prev = newNode;
             }
             else
             {
-                m_End.prev = newNode;
+                m_end.prev = newNode;
             }
-            m_End.next = newNode;
-            ++m_Size;
+            m_end.next = newNode;
+            ++m_size;
         }
 
         void Splice(Iterator position, LinkedList &other, Iterator it)
@@ -351,47 +351,47 @@ namespace icb
             getNodeLink(it)->prev = prev;
             getNodeLink(it)->next = next;
 
-            --other.m_Size;
-            ++m_Size;
+            --other.m_size;
+            ++m_size;
         }
 
         void PopFront()
         {
             assert(!Empty() && "LinkedList::PopFront empty list");
-            Node *second = asNode(m_End.next->next);
-            asNode(m_End.next)->value.~ValueType();
-            ::operator delete(asNode(m_End.next), sizeof(Node));
-            m_End.next = second;
-            m_End.next->prev = &m_End;
-            --m_Size;
+            Node *second = asNode(m_end.next->next);
+            asNode(m_end.next)->value.~ValueType();
+            ::operator delete(asNode(m_end.next), sizeof(Node));
+            m_end.next = second;
+            m_end.next->prev = &m_end;
+            --m_size;
         }
 
         void PopBack()
         {
             assert(!Empty() && "LinkedList::PopBack empty list");
-            Node *previous = asNode(m_End.prev->prev);
-            previous->next = &m_End;
-            asNode(m_End.prev)->value.~ValueType();
-            ::operator delete(asNode(m_End.prev), sizeof(Node));
-            m_End.prev = previous;
-            --m_Size;
+            Node *previous = asNode(m_end.prev->prev);
+            previous->next = &m_end;
+            asNode(m_end.prev)->value.~ValueType();
+            ::operator delete(asNode(m_end.prev), sizeof(Node));
+            m_end.prev = previous;
+            --m_size;
         }
 
         void Clear()
         {
             if (Empty())
                 return;
-            while (m_End.next != &m_End)
+            while (m_end.next != &m_end)
             {
-                Node *tmp = asNode(m_End.next);
-                m_End.next = m_End.next->next;
+                Node *tmp = asNode(m_end.next);
+                m_end.next = m_end.next->next;
                 asNode(tmp)->value.~ValueType();
                 ::operator delete(asNode(tmp), sizeof(Node));
             }
 
-            m_End.prev = &m_End;
-            m_End.next = &m_End;
-            m_Size = 0;
+            m_end.prev = &m_end;
+            m_end.next = &m_end;
+            m_size = 0;
         }
 
         Iterator Erase(Iterator position)
@@ -411,7 +411,7 @@ namespace icb
 
             delete asNode(getNodeLink(position));
 
-            --m_Size;
+            --m_size;
 
             return Iterator(next);
         }
@@ -419,43 +419,43 @@ namespace icb
         Reference Front() const noexcept
         {
             assert(!Empty() && "LinkedList::Front empty list");
-            return asNode(m_End.next)->value;
+            return asNode(m_end.next)->value;
         }
 
         Reference Back() const noexcept
         {
             assert(!Empty() && "LinkedList:Back empty list");
-            return asNode(m_End.prev)->value;
+            return asNode(m_end.prev)->value;
         }
 
         SizeType Size() const noexcept
         {
-            return m_Size;
+            return m_size;
         }
 
         bool Empty() const noexcept
         {
-            return !m_Size;
+            return !m_size;
         }
 
         Iterator begin() noexcept
         {
-            return Iterator(m_End.next);
+            return Iterator(m_end.next);
         }
 
         Iterator end() noexcept
         {
-            return Iterator(&m_End);
+            return Iterator(&m_end);
         }
 
         ConstIterator cbegin() const noexcept
         {
-            return ConstIterator(m_End.next);
+            return ConstIterator(m_end.next);
         }
 
         ConstIterator cend() const noexcept
         {
-            return ConstIterator(&m_End);
+            return ConstIterator(&m_end);
         }
 
     private:
@@ -481,17 +481,17 @@ namespace icb
 
         static inline NodeLink* getNodeLink(Iterator it) noexcept
         {
-            return it.m_Ptr;
+            return it.m_ptr;
         }
 
         static inline const NodeLink* getNodeLink(ConstIterator it) noexcept
         {
-            return it.m_Ptr;
+            return it.m_ptr;
         }
 
     private:
-        NodeLink m_End{&m_End, &m_End};
-        SizeType m_Size = 0;
+        NodeLink m_end{&m_end, &m_end};
+        SizeType m_size = 0;
     };
 
 } // namespace icb
