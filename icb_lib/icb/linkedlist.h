@@ -64,7 +64,7 @@ namespace icb
             }
 
             /**
-             * @brief SFINAE copy ctor for implicit conversion between const Iterator and Iterator
+             * @brief SFINAE copy ctor for implicit conversion between ConstIterator and Iterator
              * 
              * @tparam WasAccessType The source type
              * @tparam std::enable_if_t<std::is_const_v<AccessType> && !std::is_const_v<WasAccessType>> SFINAE
