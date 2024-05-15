@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hashtable_0',['HashTable',['../classicb_1_1HashTable.html',1,'icb']]]
+  ['bstset_0',['BSTSet',['../classicb_1_1BSTSet.html',1,'icb']]]
 ];
