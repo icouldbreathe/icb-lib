@@ -22,6 +22,8 @@ template <typename A, typename B>
 concept Comparable = requires(A a, B b) {
     { a < b } -> std::convertible_to<bool>;
     { a > b } -> std::convertible_to<bool>;
+    { a == b } -> std::convertible_to<bool>;
+    { a != b } -> std::convertible_to<bool>;
 };
 
 template <typename T> class AVLSet
@@ -41,7 +43,15 @@ template <typename T> class AVLSet
         Node *right;
         HeightType height;
 
+        Node() : Node(ValueType{})
+        {
+        }
+
         Node(const ValueType &data) : data(data), left(nullptr), right(nullptr), height(1)
+        {
+        }
+
+        Node(const ValueType &data, Node *left, Node *right) : data(data), left(left), right(right), height(1)
         {
         }
     };
@@ -62,7 +72,7 @@ template <typename T> class AVLSet
     }
 
     // copy ctor
-    AVLSet(const AVLSet<T> &other) noexcept
+    explicit AVLSet(const AVLSet<T> &other) noexcept
     {
         if (other.m_root == nullptr)
         {
@@ -73,13 +83,13 @@ template <typename T> class AVLSet
     }
 
     // move ctor
-    AVLSet(AVLSet<T> &&other) noexcept : m_root(other.m_root)
+    explicit AVLSet(AVLSet<T> &&other) noexcept : m_root(other.m_root)
     {
         other.m_root = nullptr;
     }
 
     // copy assignment
-    AVLSet operator=(const AVLSet<T> &other) noexcept
+    AVLSet &operator=(const AVLSet<T> &other) noexcept
     {
         if (other.m_root == nullptr)
         {
@@ -100,7 +110,7 @@ template <typename T> class AVLSet
     }
 
     // move assignment
-    AVLSet operator=(AVLSet &&other) noexcept
+    AVLSet &operator=(AVLSet &&other) noexcept
     {
         if (this == &other)
         {
@@ -123,6 +133,10 @@ template <typename T> class AVLSet
     void Insert(ValueType &&data)
     {
         m_root = insertAt(m_root, std::move(data));
+    }
+
+    [[deprecated("Not implemented")]] void Delete([[maybe_unused]] const ValueType &data)
+    {
     }
 
     bool Contains(const ValueType &data) const noexcept
