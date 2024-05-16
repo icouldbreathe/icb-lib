@@ -85,6 +85,8 @@ $(function() {
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="concepticb_1_1Comparable.html">icb::Comparable</a> =  <span class="keyword">requires</span>(A a, B b) {</div>
 <div class="line">    { a &lt; b } -&gt; std::convertible_to&lt;bool&gt;;</div>
 <div class="line">    { a &gt; b } -&gt; std::convertible_to&lt;bool&gt;;</div>
+<div class="line">    { a == b } -&gt; std::convertible_to&lt;bool&gt;;</div>
+<div class="line">    { a != b } -&gt; std::convertible_to&lt;bool&gt;;</div>
 <div class="line">}</div>
 <div class="ttc" id="aconcepticb_1_1Comparable_html"><div class="ttname"><a href="concepticb_1_1Comparable.html">icb::Comparable</a></div><div class="ttdef"><b>Definition</b> AVLSet.h:22</div></div>
 </div><!-- fragment --></div><!-- contents -->
