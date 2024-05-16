@@ -1,32 +1,37 @@
+#include "icb/linkedlist.h"
 #include <list>
 #include <string>
 #include <type_traits>
-#include "icb/linkedlist.h"
 
 #include "common_test_setup.h"
 
-class ICBLinkedListIntFixture : public ICBTestFixture {
-protected:
+class ICBLinkedListIntFixture : public ICBTestFixture
+{
+  protected:
     icb::LinkedList<int> list;
 };
 
-class ICBLinkedListEntityFixture : public ICBTestFixture {
-protected:
+class ICBLinkedListEntityFixture : public ICBTestFixture
+{
+  protected:
     icb::LinkedList<Entity> list;
 };
 
-class ICBLinkedListStringFixture : public ICBTestFixture {
-protected:
+class ICBLinkedListStringFixture : public ICBTestFixture
+{
+  protected:
     icb::LinkedList<std::string> list;
 };
 
-class ICBLinkedListCharFixture : public ICBTestFixture {
-protected:
+class ICBLinkedListCharFixture : public ICBTestFixture
+{
+  protected:
     icb::LinkedList<char> list;
 };
 
-class ICBLinkedListDoubleFixture : public ICBTestFixture {
-protected:
+class ICBLinkedListDoubleFixture : public ICBTestFixture
+{
+  protected:
     icb::LinkedList<double> list;
 };
 
@@ -46,10 +51,8 @@ TEST_F(ICBLinkedListIntFixture, Clear)
 
     EXPECT_DEBUG_DEATH(list.Front(), "");
     EXPECT_DEBUG_DEATH(list.Back(), "");
-    //EXPECT_DEBUG_DEATH(list.PopBack(), "");
-    //EXPECT_DEBUG_DEATH(list.PopFront(), "");
-
-    
+    // EXPECT_DEBUG_DEATH(list.PopBack(), "");
+    // EXPECT_DEBUG_DEATH(list.PopFront(), "");
 }
 
 TEST_F(ICBLinkedListIntFixture, EmptyList)
@@ -198,7 +201,7 @@ TEST(ICBLinkedList, IteratorConcept)
 {
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::Iterator>);
     EXPECT_TRUE(std::bidirectional_iterator<icb::LinkedList<int>::ConstIterator>);
-    
+
     static_assert(std::bidirectional_iterator<icb::LinkedList<int>::Iterator>);
 
     static_assert(std::is_copy_constructible_v<icb::LinkedList<int>::Iterator>);
@@ -206,7 +209,6 @@ TEST(ICBLinkedList, IteratorConcept)
 
     static_assert(std::is_copy_constructible_v<icb::LinkedList<int>::ConstIterator>);
     static_assert(std::is_trivially_copy_constructible_v<icb::LinkedList<int>::ConstIterator>);
-
 }
 
 TEST_F(ICBLinkedListIntFixture, Iterator)

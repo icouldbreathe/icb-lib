@@ -4,12 +4,12 @@
 #include <iostream>
 
 // breaks CI with std::chrono on Ubuntu Clang
-//#include "../utils/Timer.h" 
+// #include "../utils/Timer.h"
 
 class ICBTestFixture : public ::testing::Test
 {
-protected:
-    //Timer timer;
+  protected:
+    // Timer timer;
     void SetUp() override
     {
     }
@@ -21,10 +21,9 @@ protected:
 
 class Entity
 {
-public:
+  public:
     Entity() = default;
-    Entity(int num)
-        : m_Number(num)
+    Entity(int num) : m_Number(num)
     {
         std::cout << "Constructing Entity: " << m_Number << std::endl;
     }
@@ -38,12 +37,14 @@ public:
         return m_Number;
     }
 
-private:
+  private:
     int m_Number;
 };
 
 struct TestStruct
 {
     int x, y;
-    TestStruct(int a, int b) : x(a), y(b) {}
+    TestStruct(int a, int b) : x(a), y(b)
+    {
+    }
 };

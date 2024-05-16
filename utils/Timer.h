@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 struct Timer
 {
@@ -9,14 +9,12 @@ struct Timer
     std::chrono::duration<double> elapsed;
     std::string_view name;
 
-    Timer()
-    : name("Timer")
+    Timer() : name("Timer")
     {
         start = std::chrono::high_resolution_clock::now();
     }
 
-    Timer(std::string_view timerName)
-    : name(timerName)
+    Timer(std::string_view timerName) : name(timerName)
     {
         start = std::chrono::high_resolution_clock::now();
     }
