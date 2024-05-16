@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hashtable_0',['HashTable',['../classicb_1_1HashTable.html',1,'icb']]]
+  ['linkedlist_0',['LinkedList',['../classicb_1_1LinkedList.html',1,'icb']]]
 ];

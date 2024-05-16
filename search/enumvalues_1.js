@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['postorder_0',['POSTORDER',['../classicb_1_1BSTSet.html#a9308f65fb34a44ff87bb918a9ef753dba7552ec013a6a82c426de5c2e40ffb966',1,'icb::BSTSet']]],
-  ['preorder_1',['PREORDER',['../classicb_1_1BSTSet.html#a9308f65fb34a44ff87bb918a9ef753dba04b518804d80205fa2a913dd576a276b',1,'icb::BSTSet']]]
+  ['postorder_0',['POSTORDER',['../classicb_1_1AVLSet.html#a3cacccef9204d9ecb64d45440cfe2b6caca737e3db79350b01921775e29f7750e',1,'icb::AVLSet']]],
+  ['preorder_1',['PREORDER',['../classicb_1_1AVLSet.html#a3cacccef9204d9ecb64d45440cfe2b6ca402f9450173a57ef167cf7b621b0fa47',1,'icb::AVLSet']]]
 ];
