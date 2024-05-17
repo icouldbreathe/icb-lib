@@ -440,12 +440,12 @@ template <typename T> class Vector
         return Iterator(m_data + m_size);
     }
 
-    ConstIterator cbegin()
+    ConstIterator cbegin() const
     {
         return ConstIterator(m_data);
     }
 
-    ConstIterator cend()
+    ConstIterator cend() const
     {
         return ConstIterator(m_data + m_size);
     }
